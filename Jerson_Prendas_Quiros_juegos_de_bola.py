@@ -636,7 +636,7 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
                 break
 
             else:
-                print("ERROR: Valor ingresado debe ser \"C\" o \"A\".\n")
+                print("ERROR: Valor ingresado debe ser \"A\".\n")
 
 
 ###########################################
