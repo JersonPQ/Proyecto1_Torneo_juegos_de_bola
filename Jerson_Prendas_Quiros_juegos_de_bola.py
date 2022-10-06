@@ -406,6 +406,7 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
         if not (len(codigo_equipo_casa) == 3 and len(codigo_equipo_visita) == 3 and codigo_equipo_visita.isupper()
                 and codigo_equipo_casa.isupper()):
             print("\"Favor ingresar 3 caracteres en mayúscula para equipo casa y equipo visita.\"\n")
+            continue
         else:
             # revisa en cada tupla de la lista de equipos si está el código del partido
             for i, fecha in enumerate(juegos):
@@ -416,9 +417,9 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
                         indice_partido = indice
                         break
 
-        if not partido_existe:
-            print("Este juego no está en el calendario, no se puede agregar.\n")
-            continue
+            if not partido_existe:
+                print("Este juego no está en el calendario, no se puede agregar.\n")
+                continue
 
         # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los goleador
         for fecha in juegos:
