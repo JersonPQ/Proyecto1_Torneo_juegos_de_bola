@@ -611,14 +611,14 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
             print("\"Este juego no está registrado, no se puede consultar.\"")
             continue
         else:
-            print("Goles del equipo casa:    ", resultados[indice_fecha][indice_partido][0])
+            print("\nGoles del equipo casa:    ", resultados[indice_fecha][indice_partido][0])
             partido_a_consultar = goleadores[indice_fecha][indice_partido]
             equipo_casa_consultar = partido_a_consultar[0]
             for anotador in equipo_casa_consultar:
                 print("\n      - Anotador: ", anotador[0])
                 print("      - Minuto: ", anotador[1])
                 if anotador[1] in [45, 90, 120]:
-                    print("\n      - Reposicion: ", anotador[2])
+                    print("      - Reposicion: ", anotador[2])
 
             print("\nGoles del equipo visita:    ", resultados[indice_fecha][indice_partido][1])
             partido_a_consultar = goleadores[indice_fecha][indice_partido]
@@ -627,7 +627,7 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
                 print("\n      - Anotador: ", anotador[0])
                 print("      - Minuto: ", anotador[1])
                 if anotador[1] in [45, 90, 120]:
-                    print("\n      - Reposicion: ", anotador[2])
+                    print("      - Reposicion: ", anotador[2])
 
         while True:
             opcion = input("\nOPCIÓN:       <A> Aceptar ")
@@ -796,6 +796,9 @@ while True:  # ciclo siempre True para el menú
                     resultados_marcadores, resultados_goleadores = agregar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
                 else:
                     print("¡Oh oh! Para registrar resultados primero debe crear calendario de juegos.")
+
+            elif opcion_men_registro_resultados == 2:
+                consultar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
 
             elif opcion_men_registro_resultados == 0:
                 break
