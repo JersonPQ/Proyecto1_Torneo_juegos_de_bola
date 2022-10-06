@@ -422,20 +422,22 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
                 continue
 
         # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los goleador
-        for fecha in juegos:
-            goleadores_fecha = []
-            for partido in fecha:
-                goleadores_fecha.append(())
+        if goleadores == []:
+            for fecha in juegos:
+                goleadores_fecha = []
+                for partido in fecha:
+                    goleadores_fecha.append(())
 
-            goleadores.append(tuple(goleadores_fecha))
+                goleadores.append(tuple(goleadores_fecha))
 
         # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los results
-        for fecha in juegos:
-            resultado_fecha = []
-            for partido in fecha:
-                resultado_fecha.append(())
+        if resultados == []:
+            for fecha in juegos:
+                resultado_fecha = []
+                for partido in fecha:
+                    resultado_fecha.append(())
 
-            resultados.append(tuple(resultado_fecha))
+                resultados.append(tuple(resultado_fecha))
 
         # si los resultados del partido solicitado ya tienen marcador, entonces me devuelve al principio e imprime
         # que ya está registrado el marcador
