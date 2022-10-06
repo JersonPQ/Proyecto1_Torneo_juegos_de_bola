@@ -143,7 +143,7 @@ def agregar_equipo(lista, cant_equip_participantes):
                     break
 
                 # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
-                # .isupper() retorna True en caso de que la variable consultada contenga todo su valor en mayúscula
+                # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
                 if not (len(codigo_equipo) == 3 and codigo_equipo.isupper()):
                     print("\"Favor ingresar 3 caracteres en mayúscula.\"\n")
                 else:
@@ -205,7 +205,7 @@ def consultar_equipo(lista):
                 break
 
             # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función .isupper()
-            # retorna True en caso de que la variable consultada contenga todo su valor en mayúscula, en caso de no
+            # retorna True en caso de que la variable consultada contengasu valor en mayúscula, en caso de no
             # cumplirse, imprime mensaje y vuelve al inicio del ciclo
             if not (len(codigo_equipo) == 3 and codigo_equipo.isupper()):
                 print("\"Favor ingresar 3 caracteres en mayúscula.\"\n")
@@ -250,7 +250,7 @@ def modificar_equipo(lista):
                 break
 
             # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función .isupper()
-            # retorna True en caso de que la variable consultada contenga todo su valor en mayúscula, en caso de no
+            # retorna True en caso de que la variable consultada contenga su valor en mayúscula, en caso de no
             # cumplirse, imprime mensaje y vuelve al inicio del ciclo
             if not (len(codigo_equipo) == 3 and codigo_equipo.isupper()):
                 print("\"Favor ingresar 3 caracteres en mayúscula.\"\n")
@@ -317,7 +317,7 @@ def eliminar_equipos(lista):
                 break
 
             # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función .isupper()
-            # retorna True en caso de que la variable consultada contenga todo su valor en mayúscula, en caso de no
+            # retorna True en caso de que la variable consultada contenga su valor en mayúscula, en caso de no
             # cumplirse, imprime mensaje y vuelve al inicio del ciclo
             if not (len(codigo_equipo) == 3 and codigo_equipo.isupper()):
                 print("\"Favor ingresar 3 caracteres en mayúscula.\"\n")
@@ -549,6 +549,94 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
                 print("ERROR: Valor ingresado debe ser \"C\" o \"A\".\n")
 
     return resultados, goleadores
+
+
+def consultar_resultados(juegos, resultados_marcador, resultados_goles):
+    resultados = resultados_marcador
+    goleadores = resultados_goles
+
+    while True:
+        print("\n\n\n                       Torneos de bola\n")
+        print("              Registrar resultados: Consultar\n")
+        partido_existe = False
+        # solicita código de equipo, validación de que no esté registrado y que tenga 3 carácteres,
+        # en caso de ingresar "C" se sale
+        codigo_equipo_casa = input("Código del equipo casa:   ")
+        if codigo_equipo_casa == "C":
+            break
+
+        codigo_equipo_visita = input("Código del equipo visita:   ")
+        partido_a_consultar = codigo_equipo_casa, codigo_equipo_visita
+        # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
+        # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
+        if not (len(codigo_equipo_casa) == 3 and len(codigo_equipo_visita) == 3 and codigo_equipo_visita.isupper()
+                and codigo_equipo_casa.isupper()):
+            print("\"Favor ingresar 3 caracteres en mayúscula para equipo casa y equipo visita.\"\n")
+            continue
+        else:
+            # revisa en cada tupla de la lista de equipos si está el código del partido
+            for i, fecha in enumerate(juegos):
+                for indice, partido in enumerate(fecha):
+                    if partido_a_consultar == partido:
+                        partido_existe = True
+                        indice_fecha = i
+                        indice_partido = indice
+                        break
+
+            if not partido_existe:
+                print("Este juego no está en el calendario, no se puede agregar.\n")
+                continue
+
+        # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los goleador
+        if goleadores == []:
+            for fecha in juegos:
+                goleadores_fecha = []
+                for partido in fecha:
+                    goleadores_fecha.append(())
+
+                goleadores.append(tuple(goleadores_fecha))
+
+        # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los results
+        if resultados == []:
+            for fecha in juegos:
+                resultado_fecha = []
+                for partido in fecha:
+                    resultado_fecha.append(())
+
+                resultados.append(tuple(resultado_fecha))
+
+        # si los resultados del partido solicitado ya tienen marcador, entonces me devuelve al principio e imprime
+        # que ya está registrado el marcador
+        if resultados[indice_fecha][indice_partido] == ():
+            print("\"Este juego no está registrado, no se puede consultar.\"")
+            continue
+        else:
+            print("Goles del equipo casa:    ", resultados[indice_fecha][indice_partido][0])
+            partido_a_consultar = goleadores[indice_fecha][indice_partido]
+            equipo_casa_consultar = partido_a_consultar[0]
+            for anotador in equipo_casa_consultar:
+                print("\n      - Anotador: ", anotador[0])
+                print("      - Minuto: ", anotador[1])
+                if anotador[1] in [45, 90, 120]:
+                    print("\n      - Reposicion: ", anotador[2])
+
+            print("\nGoles del equipo visita:    ", resultados[indice_fecha][indice_partido][1])
+            partido_a_consultar = goleadores[indice_fecha][indice_partido]
+            equipo_visita_consultar = partido_a_consultar[1]
+            for anotador in equipo_visita_consultar:
+                print("\n      - Anotador: ", anotador[0])
+                print("      - Minuto: ", anotador[1])
+                if anotador[1] in [45, 90, 120]:
+                    print("\n      - Reposicion: ", anotador[2])
+
+        while True:
+            opcion = input("\nOPCIÓN:       <A> Aceptar ")
+
+            if opcion == "A":
+                break
+
+            else:
+                print("ERROR: Valor ingresado debe ser \"C\" o \"A\".\n")
 
 
 ###########################################
