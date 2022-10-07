@@ -388,7 +388,6 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
     goleadores = resultados_goles
 
     while True:
-        reposicion = 0
         anotadores_goles_casa, anotadores_goles_visita = [], []
         print("\n\n\n                       Torneos de bola\n")
         print("              Registrar resultados: Agregar\n")
@@ -459,6 +458,7 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
         for gol in range(cantidad_goles_casa):
             while True:
                 try:
+                    reposicion = 0
                     anotador = input("\n      - Anotador: ")
                     if len(anotador) > 40 or len(anotador) < 2:
                         print("\"Nombre de anotador debe tener entre 2 y 40 caracteres\"")
@@ -498,6 +498,7 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
         for gol in range(cantidad_goles_visita):
             while True:
                 try:
+                    reposicion = 0
                     anotador = input("\n      - Anotador: ")
                     if len(anotador) > 40 or len(anotador) < 2:
                         print("\"Nombre de anotador debe tener entre 2 y 40 caracteres\"")
@@ -637,6 +638,162 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
 
             else:
                 print("ERROR: Valor ingresado debe ser \"A\".\n")
+
+
+def modificar_resultados(juegos, resultados_marcador, resultados_goles):
+    resultados = resultados_marcador
+    goleadores = resultados_goles
+
+    while True:
+        anotadores_goles_casa, anotadores_goles_visita = [], []
+        print("\n\n\n                       Torneos de bola\n")
+        print("              Registrar resultados: Agregar\n")
+        partido_existe = False
+        # solicita código de equipo, validación de que no esté registrado y que tenga 3 carácteres,
+        # en caso de ingresar "C" se sale
+        codigo_equipo_casa = input("Código del equipo casa:   ")
+        if codigo_equipo_casa == "C":
+            break
+
+        codigo_equipo_visita = input("Código del equipo visita:   ")
+        partido_a_agregar = codigo_equipo_casa, codigo_equipo_visita
+        # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
+        # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
+        if not (len(codigo_equipo_casa) == 3 and len(codigo_equipo_visita) == 3 and codigo_equipo_visita.isupper()
+                and codigo_equipo_casa.isupper()):
+            print("\"Favor ingresar 3 caracteres en mayúscula para equipo casa y equipo visita.\"\n")
+            continue
+        else:
+            # revisa en cada tupla de la lista de equipos si está el código del partido
+            for i, fecha in enumerate(juegos):
+                for indice, partido in enumerate(fecha):
+                    if partido_a_agregar == partido:
+                        partido_existe = True
+                        indice_fecha = i
+                        indice_partido = indice
+                        break
+
+            if not partido_existe:
+                print("Este juego no está en el calendario, no se puede modificar.\n")
+                continue
+
+        # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los results
+        if resultados == []:
+            print("!Ups! Para modificar un resultado primero debe agregar algún resultado.")
+            continue
+
+        # si los resultados del partido solicitado ya tienen marcador, entonces me devuelve al principio e imprime
+        # que ya está registrado el marcador
+        if resultados[indice_fecha][indice_partido] == ():
+            print("\"Este juego no está registrado, no se puede modificar.\"")
+            continue
+
+        while True:
+            try:
+                cantidad_goles_casa = int(input("\nGoles del equipo casa:    "))
+                if not (cantidad_goles_casa >= 0):
+                    print("Cantidad de goles debe ser un numero mayor o igual que 0.")
+                else:
+                    break
+            except ValueError:
+                print("Cantidad de goles debe ser un numero mayor o igual que 0.")
+
+        # solicita el anotador y el minuto las veces que sea igual a la cantidad de goles casa
+        for gol in range(cantidad_goles_casa):
+            while True:
+                try:
+                    reposicion = 0
+                    anotador = input("\n      - Anotador: ")
+                    if len(anotador) > 40 or len(anotador) < 2:
+                        print("\"Nombre de anotador debe tener entre 2 y 40 caracteres\"")
+                        if len(anotador) > 40:
+                            print("\"Nombre de anotador se ha excedido por", len(anotador) - 40, "caracteres\"\n")
+                        else:
+                            print("\"Nombre de anotador le ha hecho falta", 2 - len(anotador), "caracteres\"\n")
+
+                    minuto = int(input("      - Minuto: "))
+                    if 40 >= len(anotador) >= 2 and 0 < abs(minuto) <= 120:
+                        if minuto in [45, 90, 120]:
+                            reposicion = int(input("      - Reposición: "))
+                            if reposicion <= 0:
+                                print("Minuto de reposición debe ser mayor que 0")
+                                continue
+
+                        anotadores_goles_casa += (anotador, minuto, reposicion),
+                        break
+
+                    if abs(minuto) > 120:
+                        print("Minuto debe ser un numero entero entre 0 y +-120.")
+
+                except ValueError:
+                    print("Minuto debe ser un numero entero entre 0 y +-120.")
+
+        while True:
+            try:
+                cantidad_goles_visita = int(input("\nGoles del equipo visita:    "))
+                if not (cantidad_goles_visita >= 0):
+                    print("Cantidad de goles debe ser un numero mayor o igual que 0.")
+                else:
+                    break
+            except ValueError:
+                print("Cantidad de goles debe ser un numero mayor o igual que 0.")
+
+        # solicita el anotador y el minuto las veces que sea igual a la cantidad de goles visita
+        for gol in range(cantidad_goles_visita):
+            while True:
+                try:
+                    reposicion = 0
+                    anotador = input("\n      - Anotador: ")
+                    if len(anotador) > 40 or len(anotador) < 2:
+                        print("\"Nombre de anotador debe tener entre 2 y 40 caracteres\"")
+                        if len(anotador) > 40:
+                            print("\"Nombre de equipo se ha excedido por", len(anotador) - 40, "caracteres\"\n")
+                        else:
+                            print("\"Nombre de equipo le ha hecho falta", 2 - len(anotador), "caracteres\"\n")
+
+                    minuto = int(input("      - Minuto: "))
+                    if 40 >= len(anotador) >= 2 and 0 <= minuto <= 120:
+                        # si el minuto es 45, 90 o 120, entonces me solicita que ingrese el minuto de reposicion
+                        if minuto in [45, 90, 120]:
+                            reposicion = int(input("      - Reposición: "))
+                            while True:
+                                if reposicion > 0:
+                                    break
+
+                                print("Minuto de reposición debe ser mayor que 0.\n")
+
+                        anotadores_goles_visita += (anotador, minuto, reposicion),
+                        break
+                    if minuto > 120 or minuto < 0:
+                        print("Minuto debe ser un numero entero entre 0 y 120.")
+                except ValueError:
+                    print("Minuto debe ser un numero entero entre 0 y 120.")
+
+        while True:
+            opcion = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+
+            if opcion == "A":
+                copia_fecha_resultado = list(resultados[indice_fecha])
+                del copia_fecha_resultado[indice_partido]
+                del resultados[indice_fecha]
+                copia_fecha_resultado.insert(indice_partido, (cantidad_goles_casa, cantidad_goles_visita))
+                resultados.insert(indice_fecha, tuple(copia_fecha_resultado))
+
+                copia_fecha_goleador = list(goleadores[indice_fecha])
+                del copia_fecha_goleador[indice_partido]
+                del goleadores[indice_fecha]
+                goleadores_partido = tuple(anotadores_goles_casa), tuple(anotadores_goles_visita)
+                copia_fecha_goleador.insert(indice_partido, goleadores_partido)
+                goleadores.insert(indice_fecha, tuple(copia_fecha_goleador))
+                break
+
+            elif opcion == "C":
+                break
+
+            else:
+                print("ERROR: Valor ingresado debe ser \"C\" o \"A\".\n")
+
+    return resultados, goleadores
 
 
 ###########################################
@@ -799,6 +956,12 @@ while True:  # ciclo siempre True para el menú
 
             elif opcion_men_registro_resultados == 2:
                 consultar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
+
+            elif opcion_men_registro_resultados == 3:
+                if calendario_juegos != []:
+                    resultados_marcadores, resultados_goleadores = agregar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
+                else:
+                    print("¡Oh oh! Para registrar resultados primero debe crear calendario de juegos.")
 
             elif opcion_men_registro_resultados == 0:
                 break
