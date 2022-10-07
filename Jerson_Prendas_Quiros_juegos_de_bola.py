@@ -399,6 +399,9 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
             break
 
         codigo_equipo_visita = input("Código del equipo visita:   ")
+        if codigo_equipo_visita == "C":
+            break
+
         partido_a_agregar = codigo_equipo_casa, codigo_equipo_visita
         # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
         # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
@@ -557,6 +560,10 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
     goleadores = resultados_goles
 
     while True:
+        if resultados == []:
+            print("!Ups! Para consultar primero debe agregar algún resultado.")
+            break
+
         print("\n\n\n                       Torneos de bola\n")
         print("              Registrar resultados: Consultar\n")
         partido_existe = False
@@ -567,6 +574,9 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
             break
 
         codigo_equipo_visita = input("Código del equipo visita:   ")
+        if codigo_equipo_visita == "C":
+            break
+
         partido_a_consultar = codigo_equipo_casa, codigo_equipo_visita
         # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
         # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
@@ -585,26 +595,8 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
                         break
 
             if not partido_existe:
-                print("Este juego no está en el calendario, no se puede agregar.\n")
+                print("Este juego no está en el calendario, no se puede consultar.\n")
                 continue
-
-        # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los goleador
-        if goleadores == []:
-            for fecha in juegos:
-                goleadores_fecha = []
-                for partido in fecha:
-                    goleadores_fecha.append(())
-
-                goleadores.append(tuple(goleadores_fecha))
-
-        # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los results
-        if resultados == []:
-            for fecha in juegos:
-                resultado_fecha = []
-                for partido in fecha:
-                    resultado_fecha.append(())
-
-                resultados.append(tuple(resultado_fecha))
 
         # si los resultados del partido solicitado ya tienen marcador, entonces me devuelve al principio e imprime
         # que ya está registrado el marcador
@@ -645,9 +637,13 @@ def modificar_resultados(juegos, resultados_marcador, resultados_goles):
     goleadores = resultados_goles
 
     while True:
+        if resultados == []:
+            print("!Ups! Para modificar primero debe agregar algún resultado.")
+            break
+
         anotadores_goles_casa, anotadores_goles_visita = [], []
         print("\n\n\n                       Torneos de bola\n")
-        print("              Registrar resultados: Agregar\n")
+        print("              Registrar resultados: Modificar\n")
         partido_existe = False
         # solicita código de equipo, validación de que no esté registrado y que tenga 3 carácteres,
         # en caso de ingresar "C" se sale
@@ -656,6 +652,9 @@ def modificar_resultados(juegos, resultados_marcador, resultados_goles):
             break
 
         codigo_equipo_visita = input("Código del equipo visita:   ")
+        if codigo_equipo_visita == "C":
+            break
+
         partido_a_agregar = codigo_equipo_casa, codigo_equipo_visita
         # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
         # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
@@ -674,13 +673,8 @@ def modificar_resultados(juegos, resultados_marcador, resultados_goles):
                         break
 
             if not partido_existe:
-                print("Este juego no está en el calendario, no se puede modificar.\n")
+                print("\"Este juego no está en el calendario, no se puede modificar.\"\n")
                 continue
-
-        # crea una lista de tuplas vacías de la misma cantidad de partidos, que se usará para registrar los results
-        if resultados == []:
-            print("!Ups! Para modificar un resultado primero debe agregar algún resultado.")
-            continue
 
         # si los resultados del partido solicitado ya tienen marcador, entonces me devuelve al principio e imprime
         # que ya está registrado el marcador
@@ -692,11 +686,11 @@ def modificar_resultados(juegos, resultados_marcador, resultados_goles):
             try:
                 cantidad_goles_casa = int(input("\nGoles del equipo casa:    "))
                 if not (cantidad_goles_casa >= 0):
-                    print("Cantidad de goles debe ser un numero mayor o igual que 0.")
+                    print("\"Cantidad de goles debe ser un numero mayor o igual que 0.\"")
                 else:
                     break
             except ValueError:
-                print("Cantidad de goles debe ser un numero mayor o igual que 0.")
+                print("\"Cantidad de goles debe ser un numero mayor o igual que 0.\"")
 
         # solicita el anotador y el minuto las veces que sea igual a la cantidad de goles casa
         for gol in range(cantidad_goles_casa):
@@ -796,6 +790,114 @@ def modificar_resultados(juegos, resultados_marcador, resultados_goles):
     return resultados, goleadores
 
 
+def eliminar_resultados(juegos, resultados_marcador, resultados_goles):
+    resultados = resultados_marcador
+    goleadores = resultados_goles
+
+    while True:
+        if resultados == []:
+            print("!Ups! Para eliminar primero debe agregar algún resultado.")
+            break
+
+        anotadores_goles_casa, anotadores_goles_visita = [], []
+        print("\n\n\n                       Torneos de bola\n")
+        print("              Registrar resultados: Eliminar\n")
+        partido_existe = False
+        # solicita código de equipo, validación de que no esté registrado y que tenga 3 carácteres,
+        # en caso de ingresar "C" se sale
+        codigo_equipo_casa = input("Código del equipo casa:   ")
+        if codigo_equipo_casa == "C":
+            break
+
+        codigo_equipo_visita = input("Código del equipo visita:   ")
+        if codigo_equipo_visita == "C":
+            break
+
+        partido_a_agregar = codigo_equipo_casa, codigo_equipo_visita
+        # validación de que el código de equipo sea en mayúscula y que sean 3 caracteres, la función
+        # .isupper() retorna True en caso de que la variable consultada contenga su valor en mayúscula
+        if not (len(codigo_equipo_casa) == 3 and len(codigo_equipo_visita) == 3 and codigo_equipo_visita.isupper()
+                and codigo_equipo_casa.isupper()):
+            print("\"Favor ingresar 3 caracteres en mayúscula para equipo casa y equipo visita.\"\n")
+            continue
+        else:
+            # revisa en cada tupla de la lista de equipos si está el código del partido
+            for i, fecha in enumerate(juegos):
+                for indice, partido in enumerate(fecha):
+                    if partido_a_agregar == partido:
+                        partido_existe = True
+                        indice_fecha = i
+                        indice_partido = indice
+                        break
+
+            if not partido_existe:
+                print("Este juego no está en el calendario, no se puede eliminar.\n")
+                continue
+
+        # si los resultados del partido solicitado ya tienen marcador, entonces me devuelve al principio e imprime
+        # que ya está registrado el marcador
+        if resultados[indice_fecha][indice_partido] == ():
+            print("\"Este juego no está registrado, no se puede eliminar.\"")
+            continue
+        else:
+            print("\nGoles del equipo casa:    ", resultados[indice_fecha][indice_partido][0])
+            partido_a_consultar = goleadores[indice_fecha][indice_partido]
+            equipo_casa_consultar = partido_a_consultar[0]
+            for anotador in equipo_casa_consultar:
+                print("\n      - Anotador: ", anotador[0])
+                print("      - Minuto: ", anotador[1])
+                if anotador[1] in [45, 90, 120]:
+                    print("      - Reposicion: ", anotador[2])
+
+            print("\nGoles del equipo visita:    ", resultados[indice_fecha][indice_partido][1])
+            partido_a_consultar = goleadores[indice_fecha][indice_partido]
+            equipo_visita_consultar = partido_a_consultar[1]
+            for anotador in equipo_visita_consultar:
+                print("\n      - Anotador: ", anotador[0])
+                print("      - Minuto: ", anotador[1])
+                if anotador[1] in [45, 90, 120]:
+                    print("      - Reposicion: ", anotador[2])
+
+        while True:
+            opcion = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+
+            if opcion not in ["A", "C"]:
+                print("\"ERROR: Valor ingresado debe ser \"C\" o \"A\".\"\n")
+                continue
+
+            if opcion == "C":
+                break
+
+            if opcion == "A":
+                print("\n\"¿Está seguro de eliminar el resultado?\"")
+                while True:
+                    opcion_confirmacion = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
+
+                    if opcion_confirmacion == "A":
+                        copia_fecha_resultado = list(resultados[indice_fecha])
+                        del copia_fecha_resultado[indice_partido]
+                        del resultados[indice_fecha]
+                        copia_fecha_resultado.insert(indice_partido, (),)
+                        resultados.insert(indice_fecha, tuple(copia_fecha_resultado))
+
+                        copia_fecha_goleador = list(goleadores[indice_fecha])
+                        del copia_fecha_goleador[indice_partido]
+                        del goleadores[indice_fecha]
+                        copia_fecha_goleador.insert(indice_partido, ())
+                        goleadores.insert(indice_fecha, tuple(copia_fecha_goleador))
+                        break
+
+                    elif opcion_confirmacion == "C":
+                        break
+
+                    else:
+                        print("\"ERROR: Valor ingresado debe ser \"C\" o \"A\".\"\n")
+
+            break
+
+    return resultados, goleadores
+
+
 ###########################################
 ##                                       ##
 ##          programa principal           ##
@@ -841,44 +943,49 @@ while True:  # ciclo siempre True para el menú
     # Menú registro de equipos
     if opcion_men_principal == 2:
         if datos_config_torneo == []:  # Validación de que si no ha configurado el torneo no se puede registrar equipos
-            ################## Validar que calendario de juegos no se haya creado ##################
             print("\"Favor ingresar primero configuración de torneo.\"\n")
-        else:
+            continue
+
+        # validación de que calendario de juegos no haya sido creado
+        if calendario_juegos != []:
+            print("¡Ups! Calendario de juegos ya fue creado, no se pueden hacer cambios en los equipos.\"")
+            continue
+
+        while True:
+            print("\n\n\n      Torneos de bola\n")
+            print("     Registrar equipos\n")
+            print("1.   Agregar equipos")
+            print("2.   Consultar equipos")
+            print("3.   Modificar equipos")
+            print("4.   Eliminar equipos")
+            print("0.   Salir")
+
             while True:
-                print("\n\n\n      Torneos de bola\n")
-                print("     Registrar equipos\n")
-                print("1.   Agregar equipos")
-                print("2.   Consultar equipos")
-                print("3.   Modificar equipos")
-                print("4.   Eliminar equipos")
-                print("0.   Salir")
+                try:  # try y except caso de que se ingrese un dato no numérico que envíe el mensaje correspondiente
+                    opcion_men_registro_equipos = int(input("\nOPCIÓN: "))
 
-                while True:
-                    try:  # try y except caso de que se ingrese un dato no numérico que envíe el mensaje correspondiente
-                        opcion_men_registro_equipos = int(input("\nOPCIÓN: "))
-
-                        if opcion_men_registro_equipos in [0, 1, 2, 3, 4]:
-                            break
-                        else:
-                            print("\"ERROR: Valor ingresado debe ser un número entre 0 y 4.\"\n")
-
-                    except ValueError:
+                    if opcion_men_registro_equipos in [0, 1, 2, 3, 4]:
+                        break
+                    else:
                         print("\"ERROR: Valor ingresado debe ser un número entre 0 y 4.\"\n")
 
-                if opcion_men_registro_equipos == 1:
-                    equipos = agregar_equipo(equipos, datos_config_torneo[1])
+                except ValueError:
+                    print("\"ERROR: Valor ingresado debe ser un número entre 0 y 4.\"\n")
 
-                if opcion_men_registro_equipos == 2:
-                    consultar_equipo(equipos)
+            if opcion_men_registro_equipos == 1:
+                equipos = agregar_equipo(equipos, datos_config_torneo[1])
 
-                if opcion_men_registro_equipos == 3:
-                    equipos = modificar_equipo(equipos)
+            elif opcion_men_registro_equipos == 2:
+                consultar_equipo(equipos)
 
-                if opcion_men_registro_equipos == 4:
-                    equipos = eliminar_equipos(equipos)
+            elif opcion_men_registro_equipos == 3:
+                equipos = modificar_equipo(equipos)
 
-                if opcion_men_registro_equipos == 0:
-                    break
+            elif opcion_men_registro_equipos == 4:
+                equipos = eliminar_equipos(equipos)
+
+            elif opcion_men_registro_equipos == 0:
+                break
 
     if opcion_men_principal == 3:
         # si no se han ingresado los datos del equipo o cantidad de equipos es menor a cantidad de equipos a registrar
@@ -927,7 +1034,12 @@ while True:  # ciclo siempre True para el menú
                     pausa = input("Presione <ENTER> para ver siguiente fecha\n")
 
     if opcion_men_principal == 4:
+        if calendario_juegos == []:
+            print("\"Favor primero crear calendario de juegos.\"")
+            continue
+
         while True:
+
             print("\n\n\n      Torneos de bola\n")
             print("     Registrar los resultados\n")
             print("1.   Agregar resultados")
@@ -949,19 +1061,16 @@ while True:  # ciclo siempre True para el menú
                     print("\"ERROR: Valor ingresado debe ser un número entre 0 y 4.\"\n")
 
             if opcion_men_registro_resultados == 1:
-                if calendario_juegos != []:
-                    resultados_marcadores, resultados_goleadores = agregar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
-                else:
-                    print("¡Oh oh! Para registrar resultados primero debe crear calendario de juegos.")
+                resultados_marcadores, resultados_goleadores = agregar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
 
             elif opcion_men_registro_resultados == 2:
                 consultar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
 
             elif opcion_men_registro_resultados == 3:
-                if calendario_juegos != []:
-                    resultados_marcadores, resultados_goleadores = agregar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
-                else:
-                    print("¡Oh oh! Para registrar resultados primero debe crear calendario de juegos.")
+                resultados_marcadores, resultados_goleadores = modificar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
+
+            elif opcion_men_registro_resultados == 4:
+                resultados_marcadores, resultados_goleadores = eliminar_resultados(calendario_juegos, resultados_marcadores, resultados_goleadores)
 
             elif opcion_men_registro_resultados == 0:
                 break
