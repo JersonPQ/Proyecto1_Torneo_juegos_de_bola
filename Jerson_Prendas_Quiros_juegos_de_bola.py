@@ -536,7 +536,7 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
                 except ValueError:
                     print("Minuto debe ser un numero entero entre 0 y 120.")
 
-        print("\nPara volver al menú de registro de resultados ingrese \"C\" en  cualquier \"Código del equipo\"")
+        print("\nPara volver al menú de registro de resultados ingrese \"C\" en cualquier \"Código del equipo\"")
 
         while True:
             opcion = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
@@ -914,6 +914,108 @@ def eliminar_resultados(juegos, resultados_marcador, resultados_goles):
     return resultados, goleadores
 
 
+def tabla_posiciones(lista_partidos, resultados_marcador, equipos, config_torneo):
+    tabla_posicion = []
+    desempate = False
+
+    for equipo in equipos:
+        # para cada equipo el orden de la lista va a ser:
+        # ["Código equipo", "Nombre", JJ, JG, JE, JP, GF, GC, GD, Puntos]
+        tabla_posicion.append([equipo[0], equipo[1], 0, 0, 0, 0, 0, 0, 0, 0])
+
+    # empieza a evaluar por fecha cada elemento de los resultados de los marcadores
+    for i_fecha, fecha in enumerate(resultados_marcador):
+        # empieza a evaluar cada partido de la fecha
+        for i_partido, partido in enumerate(fecha):
+            equipo_ganador = ""
+            equipo1_empate = ""
+            equipo2_empate = ""
+            equipo_perdedor = ""
+            if partido == ():
+                continue
+            elif partido[0] > partido[1]:
+                equipo_ganador = lista_partidos[i_fecha][i_partido][0]   # toma cual es el equipo ganador
+                goles_equipo_ganador = partido[0]                        # toma goles que metió el equipo ganador
+                equipo_perdedor = lista_partidos[i_fecha][i_partido][1]  # toma cual es el equipo perdedor
+                goles_equipo_perdedor = partido[1]                       # toma goles que metió el equipo perdedor
+            elif partido[0] < partido[1]:
+                equipo_ganador = lista_partidos[i_fecha][i_partido][1]   # toma cual es el equipo ganador
+                goles_equipo_ganador = partido[1]                        # toma goles que metió el equipo ganador
+                equipo_perdedor = lista_partidos[i_fecha][i_partido][0]  # toma cual es el equipo perdedor
+                goles_equipo_perdedor = partido[0]                       # toma goles que metió el equipo perdedor
+            else:
+                equipo1_empate = lista_partidos[i_fecha][i_partido][0]   # toma equipo 1 que empató
+                equipo2_empate = lista_partidos[i_fecha][i_partido][1]   # toma equipo 2 que empató
+                goles_equipos_empate = partido[1]                        # toma la cantidad goles por los que empataron
+
+            for i_equipo, equipo in enumerate(tabla_posicion):
+                if equipo1_empate == equipo[0]:
+                    tabla_posicion[i_equipo][2] += 1                      # Añade Juegos jugados
+                    tabla_posicion[i_equipo][4] += 1                      # Añade Juegos empatados
+                    tabla_posicion[i_equipo][6] += goles_equipos_empate   # Añade goles a favor
+                    tabla_posicion[i_equipo][7] += goles_equipos_empate   # Añade goles en contra
+                    tabla_posicion[i_equipo][9] += config_torneo[4]       # Añade puntaje
+                elif equipo2_empate == equipo[0]:
+                    tabla_posicion[i_equipo][2] += 1                      # Añade Juegos jugados
+                    tabla_posicion[i_equipo][4] += 1                      # Añade Juegos empatados
+                    tabla_posicion[i_equipo][6] += goles_equipos_empate   # Añade goles a favor
+                    tabla_posicion[i_equipo][7] += goles_equipos_empate   # Añade goles en contra
+                    tabla_posicion[i_equipo][9] += config_torneo[4]       # Añade puntaje
+                elif equipo_ganador == equipo[0]:
+                    tabla_posicion[i_equipo][2] += 1                      # Añade Juegos jugados
+                    tabla_posicion[i_equipo][3] += 1                      # Añade Juegos ganados
+                    tabla_posicion[i_equipo][6] += goles_equipo_ganador   # Añade goles a favor
+                    tabla_posicion[i_equipo][7] += goles_equipo_perdedor  # Añade goles en contra
+                    tabla_posicion[i_equipo][8] = (tabla_posicion[i_equipo][6] - tabla_posicion[i_equipo][7])  # Añade diferencia gol
+                    tabla_posicion[i_equipo][9] += config_torneo[3]       # Añade puntaje
+                elif equipo_perdedor == equipo[0]:
+                    tabla_posicion[i_equipo][2] += 1  # Añade Juegos jugados
+                    tabla_posicion[i_equipo][5] += 1  # Añade Juegos perdidos
+                    tabla_posicion[i_equipo][6] += goles_equipo_perdedor  # Añade goles a favor
+                    tabla_posicion[i_equipo][7] += goles_equipo_ganador  # Añade goles en contra
+                    tabla_posicion[i_equipo][8] = (tabla_posicion[i_equipo][6] - tabla_posicion[i_equipo][7])  # Añade diferencia gol
+
+    # orden de tabla por GF
+    tabla_posicion = sorted(tabla_posicion, key=lambda datos: datos[6], reverse=True)
+    # orden de tabla por GD
+    tabla_posicion = sorted(tabla_posicion, key=lambda datos: datos[8], reverse=True)
+    # orden de tabla según puntaje
+    tabla_posicion = sorted(tabla_posicion, key=lambda datos: datos[9], reverse=True)
+
+    if tabla_posicion[config_torneo[2]][9] == tabla_posicion[config_torneo[2] - 1][9] and \
+            tabla_posicion[config_torneo[2]][8] == tabla_posicion[config_torneo[2] - 1][8] and \
+            tabla_posicion[config_torneo[2]][6] == tabla_posicion[config_torneo[2] - 1][6]:
+        desempate = True
+
+    print("             ", config_torneo[0])
+    print("             Tabla de posiciones")
+    print("         Equipos que clasifican:", config_torneo[2])
+    print("\n{:<20} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10}".format('Equipo', 'JJ', 'JG', 'JE', 'JP',
+                                                                                    'GF', 'GC', 'GD', 'Puntos'))
+    for datos_equipo in tabla_posicion:
+        codigo, nombre, jj, jg, je, jp, gf, gc, gd, puntos = datos_equipo
+        if gd > 0:
+            gd = "+" + str(gd)
+        elif gd < 0:
+            gd = "-" + str(abs(gd))
+
+        # imprime el nombre, jj, jg, je, jp, gf, gc, gd, y puntos con un espacio determiado entre cada elemento
+        print("{:<20} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<12} {:<10}".format(nombre, jj, jg, je, jp, gf,
+                                                                                      gc, gd, puntos))
+
+    print("\n  Equipos clasificados a la fecha:")
+    for i_equ_clas, equipo_clasificado in enumerate(tabla_posicion[:config_torneo[2]]):
+        if i_equ_clas == config_torneo[2] - 1:
+            if desempate:
+                print("     ", i_equ_clas + 1, "-", "{:<20}".format(equipo_clasificado[1]), "EMPATE")
+                print("     ", i_equ_clas + 1, "-", "{:<20}".format(tabla_posicion[i_equ_clas + 1][1]), "EMPATE")
+                break
+            else:
+                print("     ", i_equ_clas + 1, "-", equipo_clasificado[1])
+                break
+        print("     ", i_equ_clas + 1, "-", equipo_clasificado[1])
+
+
 ###########################################
 ##                                       ##
 ##          programa principal           ##
@@ -958,12 +1060,12 @@ while True:  # ciclo siempre True para el menú
 
     # Menú registro de equipos
     if opcion_men_principal == 2:
-        if datos_config_torneo == []:  # Validación de que si no ha configurado el torneo no se puede registrar equipos
+        if not datos_config_torneo:  # Validación de que si no ha configurado el torneo no se puede registrar equipos
             print("\"Favor ingresar primero configuración de torneo.\"\n")
             continue
 
         # validación de que calendario de juegos no haya sido creado
-        if calendario_juegos != []:
+        if calendario_juegos:
             print("¡Ups! Calendario de juegos ya fue creado, no se pueden hacer cambios en los equipos.\"")
             continue
 
@@ -1010,7 +1112,7 @@ while True:  # ciclo siempre True para el menú
             print("¡Ups! Para continuar debe registrar la configuración del torneo y agregar la cantidad de equipos "
                   "ingresada en configuración.")
         else:
-            if calendario_juegos == []:
+            if not calendario_juegos:
                 fecha = 0
                 calendario_juegos = crear_calendario(equipos)
                 print("     ", datos_config_torneo[0])
@@ -1050,7 +1152,7 @@ while True:  # ciclo siempre True para el menú
                     pausa = input("Presione <ENTER> para ver siguiente fecha\n")
 
     if opcion_men_principal == 4:
-        if calendario_juegos == []:
+        if not calendario_juegos:
             print("\"Favor primero crear calendario de juegos.\"")
             continue
 
@@ -1090,6 +1192,14 @@ while True:  # ciclo siempre True para el menú
 
             elif opcion_men_registro_resultados == 0:
                 break
+
+    elif opcion_men_principal == 5:
+        # si calendario de juegos es [] entonces no se llama a la funcion de tabla_posiciones()
+        if not calendario_juegos:
+            print("\"Favor primero crear calendario de juegos\"")
+            continue
+
+        tabla_posiciones(calendario_juegos, resultados_marcadores, equipos, datos_config_torneo)
 
     if opcion_men_principal == 0:
         break
