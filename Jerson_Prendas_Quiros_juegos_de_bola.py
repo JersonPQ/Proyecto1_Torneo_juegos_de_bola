@@ -171,8 +171,10 @@ def agregar_equipo(lista, cant_equip_participantes):
                     else:
                         print("\"Nombre de equipo le ha hecho falta", 3 - len(nombre_equipo), "caracteres\"\n")
 
+            print("\nPara volver al menú de registro de equipos ingrese \"C\" en \"Código del equipo\"")
+
             while True:
-                opcion = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+                opcion = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
 
                 # en caso de presionar "A" guarda los datos, si presiona "C" se cancela y vuelve al menú anterior
                 if opcion == "A":
@@ -224,8 +226,10 @@ def consultar_equipo(lista):
         if codigo_equipo == "C":
             break
 
+        print("\nPara volver al menú de registro de equipos ingrese \"C\" en \"Código del equipo\"")
+
         while True:
-            opcion_modificar_equipos = input("OPCIÓN:    <A> Aceptar ")
+            opcion_modificar_equipos = input("OPCIÓN:    <A> Nueva Consulta ")
 
             if opcion_modificar_equipos == "A":
                 break
@@ -283,8 +287,10 @@ def modificar_equipo(lista):
                 else:
                     print("\"Nombre de equipo le ha hecho falta", 3 - len(nuevo_nombre), "caracteres\"\n")
 
+        print("\nPara volver al menú de registro de equipos ingrese \"C\" en \"Código del equipo\"")
+
         while True:
-            opcion_modificar_equipos = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+            opcion_modificar_equipos = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
 
             if opcion_modificar_equipos == "A":
                 equipo_modificado = codigo_equipo, nuevo_nombre
@@ -337,8 +343,10 @@ def eliminar_equipos(lista):
         if codigo_equipo == "C":
             break
 
+        print("\nPara volver al menú de registro de equipos ingrese \"C\" en \"Código del equipo\"")
+
         while True:
-            opcion_modificar_equipos = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+            opcion_modificar_equipos = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
 
             # en caso de ingresar "A" elimina el equipo con el código respectivo
             if opcion_modificar_equipos == "A":
@@ -528,8 +536,10 @@ def agregar_resultados(juegos, resultados_marcador, resultados_goles):
                 except ValueError:
                     print("Minuto debe ser un numero entero entre 0 y 120.")
 
+        print("\nPara volver al menú de registro de resultados ingrese \"C\" en  cualquier \"Código del equipo\"")
+
         while True:
-            opcion = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+            opcion = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
 
             if opcion == "A":
                 copia_fecha_resultado = list(resultados[indice_fecha])
@@ -622,8 +632,10 @@ def consultar_resultados(juegos, resultados_marcador, resultados_goles):
                 if anotador[1] in [45, 90, 120]:
                     print("      - Reposicion: ", anotador[2])
 
+        print("\nPara volver al menú de registro de resultados ingrese \"C\" en cualquier \"Código de equipo\"")
+
         while True:
-            opcion = input("\nOPCIÓN:       <A> Aceptar ")
+            opcion = input("OPCIÓN:       <A> Nueva Consulta ")
 
             if opcion == "A":
                 break
@@ -763,8 +775,10 @@ def modificar_resultados(juegos, resultados_marcador, resultados_goles):
                 except ValueError:
                     print("Minuto debe ser un numero entero entre 0 y 120.")
 
+        print("\nPara volver al menú de registro de resultados ingrese \"C\" en cualquier \"Código de equipo\"")
+
         while True:
-            opcion = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+            opcion = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
 
             if opcion == "A":
                 copia_fecha_resultado = list(resultados[indice_fecha])
@@ -858,8 +872,10 @@ def eliminar_resultados(juegos, resultados_marcador, resultados_goles):
                 if anotador[1] in [45, 90, 120]:
                     print("      - Reposicion: ", anotador[2])
 
+        print("\nPara volver al menú de registro de resultados ingrese \"C\" en cualquier \"Código de equipo\"")
+
         while True:
-            opcion = input("\nOPCIÓN:       <C> Cancelar    <A> Aceptar ")
+            opcion = input("OPCIÓN:       <C> Cancelar    <A> Aceptar ")
 
             if opcion not in ["A", "C"]:
                 print("\"ERROR: Valor ingresado debe ser \"C\" o \"A\".\"\n")
