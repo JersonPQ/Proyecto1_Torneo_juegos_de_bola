@@ -914,11 +914,11 @@ def eliminar_resultados(juegos, resultados_marcador, resultados_goles):
     return resultados, goleadores
 
 
-def tabla_posiciones(lista_partidos, resultados_marcador, equipos, config_torneo):
+def tabla_posiciones(lista_partidos, resultados_marcador, lista_equipos, config_torneo):
     tabla_posicion = []
     desempate = False
 
-    for equipo in equipos:
+    for equipo in lista_equipos:
         # para cada equipo el orden de la lista va a ser:
         # ["Código equipo", "Nombre", JJ, JG, JE, JP, GF, GC, GD, Puntos]
         tabla_posicion.append([equipo[0], equipo[1], 0, 0, 0, 0, 0, 0, 0, 0])
@@ -1014,6 +1014,69 @@ def tabla_posiciones(lista_partidos, resultados_marcador, equipos, config_torneo
                 print("     ", i_equ_clas + 1, "-", equipo_clasificado[1])
                 break
         print("     ", i_equ_clas + 1, "-", equipo_clasificado[1])
+
+
+def tabla_goleadores(lista_partidos, resultados_goleador, lista_equipos, config_torneo):
+    tabla_por_equipo = []
+    tabla_goleador = []
+
+    for equipo in lista_equipos:
+        # para cada equipo el orden de la lista va a ser:
+        # ["Codigo equipo", "Nombre equipo", goles]
+        tabla_por_equipo.append([equipo[0], equipo[1]])
+
+    # evalúa cada fecha dentro de la lista de resultados goleador, y toma el índice también
+    for i_fecha, fecha in enumerate(resultados_goleador):
+        # evaúa cada partido de la fecha y toma el índice
+        for i_partido, partido in enumerate(fecha):
+            # evalúa cada equipo, casa y visitante, de partido
+            for i_casa_o_visita, goleadores_casa_visita in enumerate(partido):
+                # en caso de que no hayan goles en partido tupla es vacía por lo que la descarta
+                if goleadores_casa_visita == ():
+                    continue
+                # guarda variable de en cuál equipo hizo gol tomando el índice de fecha, partido y equipo casa o visita,
+                # y lo toma de la lista de partidos
+                equipo_hizo_gol = lista_partidos[i_fecha][i_partido][i_casa_o_visita]
+                # evalúa cada persona que hizo gol por cada equipo
+                for goleador in goleadores_casa_visita:
+                    jugador_esta = False
+                    # evalúa cada elemento de la tabla de goleador
+                    for i_elemento, elemento in enumerate(tabla_por_equipo):
+                        # si el equipo_hizo gol es diferente al primer valor de la lista elemento, que es el código de
+                        # equipo, entonces hace un continue
+                        if equipo_hizo_gol != elemento[0]:
+                            continue
+
+                        # evalúa cada elemento de la lista por equipos
+                        for i_anota, anota in enumerate(elemento[1:]):
+                            # si el goleador ya está en la lista, solo le agrega 1 a los goles
+                            if goleador[0] in anota:
+                                jugador_esta = True
+                                tabla_por_equipo[i_elemento][i_anota + 1][1] += 1
+                                break
+
+                        # si jugador no está en la lista, lo agrega y le pone un gol
+                        if not jugador_esta:
+                            tabla_por_equipo[i_elemento].append([goleador[0], 1])
+
+    for equipo_tabla in tabla_por_equipo:
+        # en caso de que el largo de la lista de equipo_tabla sea menor que 3, es decir, que no tiene anotadores,
+        # entonces salta al siguiente equipo con el continue
+        if len(equipo_tabla) < 3:
+            continue
+
+        # añade la lista de nombre de jugador, nombre de equipo y goles a la lista de tabla_goleador
+        for jugador in equipo_tabla[2:]:
+            tabla_goleador.append([jugador[0], equipo_tabla[1], jugador[1]])
+
+    # ordena la tabla con respecto a goles anotados y le da el reverse para que lo ponga descendentemente
+    tabla_goleador = sorted(tabla_goleador, key=lambda jugador: jugador[2], reverse=True)
+
+    print("             ", config_torneo[0])
+    print("          Tabla de goleadores")
+    print("   {:<20} {:<20} {:<10}".format("Jugador", "Equipo", "Goles"))
+    for goles_jugador in tabla_goleador:
+        print("{:<24} {:20} {:<10}".format(goles_jugador[0], goles_jugador[1], goles_jugador[2]))
 
 
 ###########################################
