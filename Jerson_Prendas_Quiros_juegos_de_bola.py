@@ -1264,5 +1264,18 @@ while True:  # ciclo siempre True para el menú
 
         tabla_posiciones(calendario_juegos, resultados_marcadores, equipos, datos_config_torneo)
 
+    elif opcion_men_principal == 6:
+        if not calendario_juegos:
+            print("\"Favor primero crear calendario de juegos\"")
+            continue
+
+        tabla_goleadores(calendario_juegos, resultados_goleadores, equipos, datos_config_torneo)
+
+    elif opcion_men_principal == 8:
+        print("\n\nJuegos de bola.")
+        print("Versión: 1.0")
+        print("Fecha creación: 7 de octubre del 2022")
+        print("Autor: Jerson Prendas Quirós")
+
     if opcion_men_principal == 0:
         break
