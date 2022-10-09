@@ -1,3 +1,5 @@
+import subprocess
+
 ###########################################
 ##                                       ##
 ##              funciones                ##
@@ -1270,6 +1272,9 @@ while True:  # ciclo siempre True para el menú
             continue
 
         tabla_goleadores(calendario_juegos, resultados_goleadores, equipos, datos_config_torneo)
+
+    elif opcion_men_principal == 7:
+        subprocess.Popen("", shell=True) ########################## linkear pdf
 
     elif opcion_men_principal == 8:
         print("\n\nJuegos de bola")
