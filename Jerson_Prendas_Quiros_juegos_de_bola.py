@@ -266,7 +266,7 @@ def modificar_equipo(lista):
                 for equipo in lista:
                     if codigo_equipo in equipo[0]:
                         posicion_equipo_lista = lista.index(equipo)
-                        print("Nombre del equipo:   ", equipo[1])
+                        print("Nombre actual del equipo:   ", equipo[1])
                         break
                 else:  # en caso de no encontrar código de equipo, imprime mensaje y vuelve al inicio de ciclo
                     print("\"Este equipo no está registrado, no se puede modificar\"\n")
@@ -1274,7 +1274,7 @@ while True:  # ciclo siempre True para el menú
         tabla_goleadores(calendario_juegos, resultados_goleadores, equipos, datos_config_torneo)
 
     elif opcion_men_principal == 7:
-        subprocess.Popen("", shell=True) ########################## linkear pdf
+        subprocess.Popen("Manual_de_Usuario.pdf", shell=True)
 
     elif opcion_men_principal == 8:
         print("\n\nJuegos de bola")
