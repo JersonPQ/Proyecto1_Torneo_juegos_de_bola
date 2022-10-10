@@ -1274,7 +1274,7 @@ while True:  # ciclo siempre True para el menú
         tabla_goleadores(calendario_juegos, resultados_goleadores, equipos, datos_config_torneo)
 
     elif opcion_men_principal == 7:
-        subprocess.Popen("Manual_de_Usuario.pdf", shell=True)
+        subprocess.Popen("Jerson_Prendas_Quiros_manual_de_usuario_juegos_de_bola.pdf", shell=True)
 
     elif opcion_men_principal == 8:
         print("\n\nJuegos de bola")
