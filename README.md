@@ -1,6 +1,4 @@
 # Proyecto1_Torneo_juegos_de_bola
-Proyecto de intro a progra torneo de futbol
+Proyect 1 (University): Soccer tournament
 
-Este es un proyecto para crear un torneo de fútbol, con la cantidad de equipos deseada, puntaje personalizado
-equipos clasificados cuales quiera y tabla de posiciones y goleador con respecto
-a los datos que ingresó en lso resultados
+This is a project to create a personalized soccer tournament where you can config your tournament with any amount of teams, and you can add results, and see any data you want related to the tournament.
